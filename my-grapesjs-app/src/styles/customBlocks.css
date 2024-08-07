@@ -1,0 +1,28 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.col-3 {
+    flex: 0 0 25%;
+}
+
+.col-7 {
+    flex: 0 0 75%;
+}
+
+.text-selector {
+    margin: 10px 0;
+}
+
+.text-selector h1,
+.text-selector h2,
+.text-selector p {
+    margin: 5px 0;
+}

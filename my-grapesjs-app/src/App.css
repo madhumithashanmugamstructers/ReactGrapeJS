@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+main {
+  height: 100vh;
+}
+
+.gjs-editor-container {
+  height: calc(100vh - 80px);
+}
+#gjs {
+  height: 100%;
+  border: 1px solid #ccc;
+}
