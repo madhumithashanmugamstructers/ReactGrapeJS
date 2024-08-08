@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import grapesjs from 'grapesjs';
 import 'grapesjs-blocks-basic';
@@ -52,7 +51,6 @@ const GrapeJSEditor = () => {
                       <input type="text" id="input1" class="form-control"/>
                     </div>
                   </form>`,
-        category: 'Forms',
       });
 
     editor.on('storage:store', (e) => {
@@ -145,6 +143,36 @@ const GrapeJSEditor = () => {
       label: 'Image',
       content: '<img src="path_to_image.jpg" alt="Image" style="max-width: 100%; height: auto;">',
     });
+    editor.BlockManager.add('one-row', {
+      label: 'One Row',
+      content: '<div class="row"><div class="col">One Row</div></div>',
+    });
+
+    editor.BlockManager.add('two-rows', {
+      label: 'Two Rows',
+      content: `<div class="row">
+                  <div class="col">Row 1</div>
+                </div>
+                <div class="row">
+                  <div class="col">Row 2</div>
+                </div>`,
+      // category: 'Layout',
+    });
+
+    editor.BlockManager.add('three-rows', {
+      label: 'Three Rows',
+      content: `<div class="row">
+                  <div class="col">Row 1</div>
+                </div>
+                <div class="row">
+                  <div class="col">Row 2</div>
+                </div>
+                <div class="row">
+                  <div class="col">Row 3</div>
+                </div>`,
+      // category: 'Layout',
+    });
+
 
   }, []);
 
@@ -176,33 +204,6 @@ const GrapeJSEditor = () => {
         saveAs(content, 'website.zip');
       });
   };
-
-// const handleDownload = () => {
-//     const editor = editorRef.current;
-//     const html = editor.getHtml();
-//     const css = editor.getCss();
-//     const fullHtml = `
-//       <!DOCTYPE html>
-//       <html lang="en">
-//       <head>
-//         <meta charset="UTF-8">
-//         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//         <style>${css}</style>
-//       </head>
-//       <body>
-//         ${html}
-//       </body>
-//       </html>
-//     `;
-
-//     const blob = new Blob([fullHtml], { type: 'text/html' });
-//     const link = document.createElement('a');
-//     link.href = URL.createObjectURL(blob);
-//     link.download = 'index.html';
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-// };
   const handleClear = () => {
     const editor = editorRef.current;
     editor.setComponents('');
