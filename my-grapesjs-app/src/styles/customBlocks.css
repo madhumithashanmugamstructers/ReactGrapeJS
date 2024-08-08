@@ -26,3 +26,31 @@
 .text-selector p {
     margin: 5px 0;
 }
+.custom-blog-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; 
+  }
+  
+  .custom-blog-container > * {
+    box-sizing: border-box;
+  }
+  
+  .custom-blog-container .col-1 {
+    flex: 1 1 100%; 
+  }
+  
+  .custom-blog-container .col-2 {
+    flex: 1 1 50%; 
+  }
+  
+  .custom-blog-container .col-3 {
+    flex: 1 1 33.33%; 
+  }
+  .custom-blog-container.row {
+    flex-direction: row;
+  }
+  
+  .custom-blog-container.column {
+    flex-direction: column;
+  }

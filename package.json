@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "grapesjs": "^0.21.12",
+    "grapesjs-blocks-basic": "^1.0.2"
+  }
+}

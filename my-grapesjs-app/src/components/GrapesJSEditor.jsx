@@ -1,8 +1,11 @@
+
 import React, { useEffect, useRef } from 'react';
 import grapesjs from 'grapesjs';
 import 'grapesjs-blocks-basic';
 import 'grapesjs/dist/css/grapes.min.css';
 import '../styles/customBlocks.css';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const GrapeJSEditor = () => {
   const editorRef = useRef(null);
@@ -25,7 +28,6 @@ const GrapeJSEditor = () => {
       },
     });
 
-  
     editor.on('component:add', (model) => {
       console.log('Component added:', model);
     });
@@ -41,6 +43,17 @@ const GrapeJSEditor = () => {
       editor.setComponents(html);
       editor.setStyle(css);
     }
+    
+    editor.BlockManager.add('input-block', {
+        label: 'Input Field',
+        content: `<form>
+                    <div class="form-group">
+                      <label for="input1">Input Label:</label>
+                      <input type="text" id="input1" class="form-control"/>
+                    </div>
+                  </form>`,
+        category: 'Forms',
+      });
 
     editor.on('storage:store', (e) => {
       const html = editor.getHtml();
@@ -135,27 +148,61 @@ const GrapeJSEditor = () => {
 
   }, []);
 
-const handleDownload = () => {
+  const handleDownload = () => {
     const editor = editorRef.current;
     const html = editor.getHtml();
     const css = editor.getCss();
-    const htmlBlob = new Blob([html], { type: 'text/html' });
-    const htmlLink = document.createElement('a');
-    htmlLink.href = URL.createObjectURL(htmlBlob);
-    htmlLink.download = 'index.html';
-    document.body.appendChild(htmlLink);
-    htmlLink.click();
-    document.body.removeChild(htmlLink);
-    const cssBlob = new Blob([css], { type: 'text/css' });
-    const cssLink = document.createElement('a');
-    cssLink.href = URL.createObjectURL(cssBlob);
-    cssLink.download = 'styles.css';
-    document.body.appendChild(cssLink);
-    cssLink.click();
-    document.body.removeChild(cssLink);
 
+    const fullHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Generated Page</title>
+      <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+      ${html}
+    </body>
+    </html>`;
 
+    const zip = new JSZip();
+    zip.file('index.html', fullHtml);
+    zip.file('styles.css', css);
+
+    zip.generateAsync({ type: 'blob' })
+      .then((content) => {
+        saveAs(content, 'website.zip');
+      });
   };
+
+// const handleDownload = () => {
+//     const editor = editorRef.current;
+//     const html = editor.getHtml();
+//     const css = editor.getCss();
+//     const fullHtml = `
+//       <!DOCTYPE html>
+//       <html lang="en">
+//       <head>
+//         <meta charset="UTF-8">
+//         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//         <style>${css}</style>
+//       </head>
+//       <body>
+//         ${html}
+//       </body>
+//       </html>
+//     `;
+
+//     const blob = new Blob([fullHtml], { type: 'text/html' });
+//     const link = document.createElement('a');
+//     link.href = URL.createObjectURL(blob);
+//     link.download = 'index.html';
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+// };
   const handleClear = () => {
     const editor = editorRef.current;
     editor.setComponents('');
@@ -166,7 +213,7 @@ const handleDownload = () => {
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ marginBottom: '10px' }}>
-        <button onClick={handleDownload}>Download HTML</button>
+        <button onClick={handleDownload}>Download as ZIP</button>
         <button onClick={handleClear} style={{ marginLeft: '10px' }}>Clear Data</button>
       </div>
       <div id="gjs" style={{ flexGrow: 1, border: '1px solid #ccc', overflow: 'auto' }}></div>
@@ -174,4 +221,4 @@ const handleDownload = () => {
   );
 };
 
-export default GrapeJSEditor;
+export default GrapeJSEditor;
